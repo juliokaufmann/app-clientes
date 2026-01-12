@@ -6,11 +6,7 @@ class CindapaLogo extends StatelessWidget {
   final double? height;
   final double? width;
 
-  const CindapaLogo({
-    super.key,
-    this.height,
-    this.width,
-  });
+  const CindapaLogo({super.key, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -19,29 +15,38 @@ class CindapaLogo extends StatelessWidget {
       height: height ?? 40,
       width: width,
       fit: BoxFit.contain,
-      placeholder: (context, url) => const SizedBox(
-        height: 40,
-        width: 40,
-        child: Center(
+      httpHeaders: const {'Accept': 'image/webp,image/*,*/*'},
+      placeholder: (context, url) => SizedBox(
+        height: height ?? 40,
+        width: width ?? 40,
+        child: const Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
             color: AppTheme.accentBlue,
           ),
         ),
       ),
-      errorWidget: (context, url, error) => Container(
-        height: height ?? 40,
-        width: width,
-        decoration: BoxDecoration(
-          color: AppTheme.mediumGray,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: const Icon(
-          Icons.business,
-          color: AppTheme.accentBlue,
-          size: 24,
-        ),
-      ),
+      errorWidget: (context, url, error) {
+        // Log do erro para debug
+        debugPrint('Erro ao carregar logo: $error');
+        debugPrint('URL: $url');
+
+        return Container(
+          height: height ?? 40,
+          width: width ?? 40,
+          decoration: BoxDecoration(
+            color: AppTheme.mediumGray,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: const Icon(
+            Icons.business,
+            color: AppTheme.accentBlue,
+            size: 24,
+          ),
+        );
+      },
+      fadeInDuration: const Duration(milliseconds: 300),
+      fadeOutDuration: const Duration(milliseconds: 100),
     );
   }
 }
